@@ -1,0 +1,40 @@
+body {
+  background: radial-gradient(#cface0, #814a92);
+  font-size: 1.2em;
+  width: 50%;
+  margin: 20px;
+  padding: 20px;
+  text-align: center;
+  min-height: 50vh;
+}
+#songList {
+  background: rgb(247, 243, 246);
+  border-radius: 10px;
+  text-align: left;
+}
+
+li {
+  padding: 10px;
+}
+
+li:hover, svg:hover {
+  cursor: pointer;
+}
+
+#controls {
+  border: 1px lightgray solid;
+  border-radius: 50px;
+  background: rgb(247, 243, 246);
+  padding: 1.5em;
+}
+
+svg {
+  color: lightslategray
+}
+
+progress {
+  width: 80%;
+  margin: 20px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+}
