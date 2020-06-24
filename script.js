@@ -1,29 +1,69 @@
 const songs = [
-  "bensound-creativeminds.mp3",
-  "bensound-cute.mp3",
-  "bensound-goinghigher.mp3",
-  "bensound-happyrock.mp3",
-  "bensound-inspire.mp3"
-]
+  "songs/bensound-creativeminds.mp3",
+  "songs/bensound-cute.mp3",
+  "songs/bensound-goinghigher.mp3",
+  "songs/bensound-happyrock.mp3",
+  "songs/bensound-inspire.mp3"
+];
 
-const createSongList = () => {
-  const list = document.createElement('ol')
+function changeHandler({
+  target
+}) {
+  // Make sure we have files to use
+  if (!target.files.length) return;
 
-  for(let i = 0; i<songs.length; i++) {
-    const item = document.createElement('li')
-    item.appendChild(document.createTextNode(songs[i]))
+  // Create a blob that we can use as an src for our audio element
+  const urlObj = URL.createObjectURL(target.files[0]);
 
-    list.appendChild(item)
-  }
-  return list
+  // Create an audio element
+  const audio = document.createElement("audio");
+
+  // Clean up the URL Object after we are done with it
+  audio.addEventListener("load", () => {
+    URL.revokeObjectURL(urlObj);
+  });
+
+  // Append the audio element
+  document.body.appendChild(audio);
+
+  // Set the src and start loading the audio from the file
+  audio.src = urlObj;
 }
 
-document.getElementById('songList').appendChild(createSongList())
+document
+  .getElementById("audio-upload")
+  .addEventListener("change", changeHandler);
+
+const list = document.getElementById('songList');
+
+function addSongToList(listItem) {
+  list.appendChild(listItem);
+}
+
+function createSongListItem(title, location) {
+  const item = document.createElement('li');
+  const titleElement = document.createTextNode(title);
+  item.appendChild(titleElement);
+  item.dataset.location = location;
+  return item;
+}
+
+const createSongList = () => {
+  for(let i = 0; i<songs.length; i++) {
+    const title = songs[i];
+    const location = songs[i];
+    const item = createSongListItem(title, location);
+    addSongToList(item);
+  }
+}
+createSongList();
 
 songList.onclick = (e) => {
-  clickedItem = e.target
+  const clickedItem = e.target
+  const location = clickedItem.dataset.location;
   const source = document.getElementById('source')
-  source.src = 'songs/' + clickedItem.innerText
+  source.src = location
+  // 'songs/' + clickedItem.innerText
 
   document.getElementById('currentlyPlayingSong').innerText= "Currently Playing: "
   document.getElementById('currentSong').innerText=clickedItem.innerText
@@ -34,7 +74,7 @@ songList.onclick = (e) => {
 const playAudio = () => {
   if(player.readyState) {
     player.play()
-  }  
+  }
 }
 
 const pauseAudio = () => {
